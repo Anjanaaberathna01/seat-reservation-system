@@ -74,7 +74,7 @@ body {
         <!-- Right: Navigation -->
         <div class="nav-links">
             <a href="index.php">Home</a>
-            <a href="login.php">Log In</a>
+            <a href="index.php">Log In</a>
             <a href="admin.php">Admin</a>
         </div>
     </div>

@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $password = trim($_POST['password']);
 
     if (!empty($email) && !empty($password)) {
-        $conn = (new database())->connect(); // using your connect.php class
+        $conn = (new database())->connect();
         $email = mysqli_real_escape_string($conn, $email);
 
         $query = "SELECT * FROM users WHERE email='$email' LIMIT 1";
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             if (password_verify($password, $user['password'])) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_name'] = $user['name'];
-                header("Location: index.php");
+                header("Location: dashboard.php"); // Redirect to dashboard
                 exit;
             } else {
                 $message = "Incorrect email or password!";
@@ -48,7 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         margin: 0;
         padding: 20px 0;
         /* top & bottom padding */
-        height: 100vh;
         display: flex;
         flex-direction: column;
     }
@@ -126,6 +125,10 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 <input type="password" name="password" placeholder="Password" required>
                 <button type="submit">Log In</button>
             </form>
+            <p style="text-align:center; margin-top:10px;">
+                Don't have an account? <a href="register.php">Register here</a>
+            </p>
+
         </div>
     </div>
 </body>
