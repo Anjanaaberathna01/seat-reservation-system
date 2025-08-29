@@ -1,7 +1,3 @@
-<?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-} ?>
 <!-- Header -->
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap');
@@ -24,6 +20,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    /* Title left, nav right */
     flex-wrap: wrap;
 }
 
@@ -51,13 +48,13 @@ body {
     padding: 5px 10px;
     border-radius: 4px;
     transition: background 0.3s;
-    cursor: pointer;
 }
 
 #blue_bar .nav-links a:hover {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
+/* Responsive: stack links under title on very small screens */
 @media screen and (max-width: 500px) {
     #blue_bar .blue_container {
         flex-direction: column;
@@ -71,23 +68,13 @@ body {
     <div class="blue_container">
         <!-- Left: Website title -->
         <h1>
-            <a href="index.php">Seat Reservation</a>
+            <a href="../index.php">Seat Reservation</a>
         </h1>
 
         <!-- Right: Navigation -->
         <div class="nav-links">
-            <?php if (isset($_SESSION['user_email'])): ?>
-            <!-- Logged-in user -->
-            <a href="dashboard.php">Home</a>
-            <a href="profile.php">Profile</a>
-            <a href="logout.php">Logout</a>
-            <?php else: ?>
-            <!-- Before login -->
-            <a href="#" onclick="alert('First log in'); return false;"
-                style="opacity: 0.6; pointer-events: auto;">Home</a>
-            <a href="index.php">Log In</a>
-            <a href="admin/index.php">Admin</a>
-            <?php endif; ?>
+            <a href="index.php">Home</a>
+            <a href="index.php">Log Out</a>
         </div>
     </div>
 </div>

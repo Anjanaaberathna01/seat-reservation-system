@@ -86,14 +86,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['change_password'])) {
     .container {
         display: flex;
         justify-content: center;
-        margin-top: 50px;
+        margin-top: 30px;
     }
 
     .profile-heading {
+        text-align: left;
         margin-left: 250px;
-        /* optional, aligns text itself to the right */
+        margin-bottom: 20px;
     }
-
 
     .profile-container {
         display: flex;
@@ -112,30 +112,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['change_password'])) {
         border-radius: 12px;
         min-width: 400px;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Right Side Rows */
-    .profile-side {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .side-row {
-        background: #fff;
-        padding: 15px;
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        font-size: 14px;
-        color: #444;
-        min-width: 250px;
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .side-row:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     }
 
     .profile-box h2 {
@@ -186,6 +162,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['change_password'])) {
         font-weight: bold;
     }
 
+    /* Right Side Rows */
+    .profile-side {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .side-row {
+        background: #fff;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        font-size: 14px;
+        color: #444;
+        min-width: 250px;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .side-row:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
     .profile-card {
         display: flex;
         flex-direction: column;
@@ -199,26 +199,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['change_password'])) {
         height: 80px;
         border-radius: 50%;
         border: 3px solid #0542c5;
+        margin-bottom: 10px;
     }
 
     .profile-info h3 {
         margin: 0;
         font-size: 18px;
         color: #333;
-        text-align: center;
     }
 
     .profile-info p {
         margin: 5px 0 0;
         color: #666;
         font-size: 14px;
-        text-align: center
     }
 
+    /* Password Form in Side Row */
     .side-row form {
         display: flex;
         flex-direction: column;
-        gap: 5px;
+        gap: 8px;
     }
 
     .side-row input {
@@ -240,6 +240,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['change_password'])) {
         background: #0431a0;
     }
 
+    /* Active / Inactive */
+    .active {
+        color: green;
+        font-weight: bold;
+    }
+
+    .inactive {
+        color: red;
+        font-weight: bold;
+    }
 
     /* Responsive */
     @media (max-width: 800px) {
@@ -256,26 +266,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['change_password'])) {
             flex: 1 1 45%;
         }
     }
+
+    @media (max-width: 500px) {
+        .side-row {
+            flex: 1 1 100%;
+        }
+    }
     </style>
 </head>
 
 <body>
     <?php include("header.php"); ?>
+
     <div class="profile-heading">
         <h1>Your Profile</h1>
-        <p>View And manage your personal information</p>
+        <p>View and manage your personal information</p>
     </div>
-    <div class="container">
 
+    <div class="container">
         <div class="profile-container">
+
             <!-- Left Column: Profile Form -->
             <div class="profile-box">
                 <h2>Personal Information</h2>
-
                 <?php if ($message)
                     echo "<p class='message'>$message</p>"; ?>
-
                 <form method="POST">
+                    <input type="hidden" name="update_profile">
                     <label for="name">Full Name</label>
                     <input type="text" name="name" value="<?php echo htmlspecialchars($user['name']); ?>" required>
 
@@ -298,30 +315,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['change_password'])) {
                 </form>
             </div>
 
-            <!-- Right Column: Extra Rows -->
+            <!-- Right Column: Side Rows -->
             <div class="profile-side">
+
+                <!-- Profile Card -->
                 <div class="side-row profile-card">
                     <img src="https://icons.veryicon.com/png/o/business/multi-color-financial-and-business-icons/user-139.png"
-                        alt="User Photo" class="profile-pic"><br>
+                        alt="User Photo" class="profile-pic">
                     <div class="profile-info">
                         <h3><?php echo htmlspecialchars($_SESSION['user_name']); ?></h3>
-                        <p>📍Location: <?php echo htmlspecialchars($user['location']); ?></p>
+                        <p>📍 Location: <?php echo htmlspecialchars($user['location']); ?></p>
                     </div>
                 </div>
-                <!-- Show Registration Date -->
-                <div class="side-row">
-                    📅 <strong>Registered on: <br> </strong>
-                    <?php echo date("F j, Y", strtotime($user['created_at'])); ?>
-                    <br>
-                    <br>
-                    <strong>User Role: <br></strong>
-                    <?php echo htmlspecialchars($user['role']); ?>
-                    <br>
-                    <br>
-                    🟢 <strong>Status:</strong>
-                    <?php echo ($user['status'] === 'Active') ? '<span class="active">Active</span>' : '<span class="inactive">Inactive</span>'; ?>
 
-                    <!-- Change Password Form -->
+                <!-- Registration Info & Password Change -->
+                <div class="side-row">
+                    📅 <strong>Registered on:</strong>
+                    <?php echo date("F j, Y", strtotime($user['created_at'])); ?><br><br>
+                    <strong>User Role:</strong> <?php echo htmlspecialchars($user['role']); ?><br><br>
+                    🟢 <strong>Status:</strong>
+                    <?php echo ($user['status'] === 'Active') ? '<span class="active">Active</span>' : '<span class="inactive">Inactive</span>'; ?><br>
+
                     <h4>Change Password</h4>
                     <form method="POST">
                         <input type="password" name="current_password" placeholder="Current Password" required>
@@ -330,6 +344,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['change_password'])) {
                     </form>
                 </div>
 
+                <!-- Next Step -->
                 <div class="side-row">
                     🎯 <strong>Next Step:</strong>
                     <a href="reservation_rp.php" style="text-decoration:none; color:#333; font-weight:bold;">
@@ -339,8 +354,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['change_password'])) {
 
             </div>
         </div>
-
     </div>
+
 </body>
 
 </html>

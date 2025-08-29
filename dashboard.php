@@ -1,9 +1,24 @@
 <?php
 session_start();
+include("includes/connect.php");
+$conn = (new database())->connect();
+
+$user_id = $_SESSION['user_id'];
+$query = "SELECT email FROM users WHERE id = '$user_id' LIMIT 1";
+$result = mysqli_query($conn, $query);
+
+if ($row = mysqli_fetch_assoc($result)) {
+    $_SESSION['user_email'] = $row['email']; // store it for later
+}
 
 // Redirect to login if not logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
+    exit;
+}
+
+if (!isset($_SESSION['user_email'])) {
+    header("Location: login.php");
     exit;
 }
 ?>
@@ -13,10 +28,16 @@ if (!isset($_SESSION['user_id'])) {
 
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
+    <title>User Dashboard</title>
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap');
 
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #f9f9f9;
+        margin: 0;
+        padding: 0;
+    }
 
     /* Dashboard Header */
     .dashboard-header {
@@ -34,21 +55,22 @@ if (!isset($_SESSION['user_id'])) {
         color: #333;
     }
 
-    /* Log Out Button */
-    .logout-btn {
-        display: inline-block;
-        padding: 8px 16px;
-        background: #f44336;
-        /* Red color */
-        color: #fff;
-        text-decoration: none;
-        border-radius: 5px;
-        font-weight: 500;
-        transition: background 0.3s;
+    /* Email Badge (draggable) */
+    .email-badge {
+        background: #0542c5;
+        color: white;
+        padding: 10px 18px;
+        border-radius: 30px;
+        font-size: 14px;
+        cursor: grab;
+        user-select: none;
+        transition: transform 0.3s, box-shadow 0.3s;
     }
 
-    .logout-btn:hover {
-        background: #d32f2f;
+    .email-badge:active {
+        cursor: grabbing;
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
 
     /* Dashboard content */
@@ -58,7 +80,6 @@ if (!isset($_SESSION['user_id'])) {
         padding: 20px;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        /* 3 columns */
         gap: 20px;
     }
 
@@ -120,33 +141,70 @@ if (!isset($_SESSION['user_id'])) {
         background: #0431a0;
     }
 
+    .user-dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropbtn {
+        color: #333;
+        padding: 10px 16px;
+        font-size: 14px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+
+    /* Dropdown Content */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: #fff;
+        min-width: 180px;
+        border-radius: 8px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        z-index: 1;
+        padding: 8px 0;
+    }
+
+    .dropdown-content a {
+        color: #333;
+        padding: 10px 16px;
+        text-decoration: none;
+        display: block;
+        font-size: 14px;
+        transition: background 0.3s;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Show on hover */
+    .user-dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+
     /* Responsive */
     @media (max-width: 900px) {
         .dashboard-content {
             grid-template-columns: 1fr 1fr;
-            /* 2 columns */
         }
     }
 
     @media (max-width: 600px) {
         .dashboard-content {
             grid-template-columns: 1fr;
-            /* 1 column */
-        }
-    }
-
-
-
-    @media (max-width: 600px) {
-
-        .dashboard-header,
-        .dashboard-content {
-            margin: 15px;
-            padding: 15px;
         }
 
-        .dashboard-header h1 {
-            font-size: 20px;
+        .dashboard-header {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
         }
     }
     </style>
@@ -157,7 +215,24 @@ if (!isset($_SESSION['user_id'])) {
 
     <div class="dashboard-header">
         <h1>Welcome, <?php echo htmlspecialchars($_SESSION['user_name']); ?>!</h1>
-        <a href="logout.php" class="logout-btn">Log Out</a>
+
+        <?php if (isset($_SESSION['user_email'])): ?>
+        <div class="user-dropdown">
+            <button class="dropbtn">
+                👤 <?php echo htmlspecialchars($_SESSION['user_email']); ?>
+            </button>
+            <div class="dropdown-content" draggable="true">
+                <a href="profile.php">👤 Profile</a>
+                <a href="change_password.php">🔑 Change Password</a>
+                <a href="logout.php">🚪 Log Out</a>
+            </div>
+        </div>
+        <?php else: ?>
+        <p style="color: red; font-size: 14px;">⚠️ Email not set</p>
+        <?php endif; ?>
+
+
+
     </div>
 
     <div class="dashboard-content">
@@ -177,7 +252,7 @@ if (!isset($_SESSION['user_id'])) {
             <a href="profile.php" class="item-btn">View Profile</a>
         </div>
 
-        <!-- Optional Third Column -->
+        <!-- Stats Column -->
         <div class="dashboard-item">
             <div class="item-icon stats-icon">📊</div>
             <h3>Stats</h3>
@@ -186,7 +261,19 @@ if (!isset($_SESSION['user_id'])) {
         </div>
     </div>
 
+    <script>
+    // Drag functionality for the email badge
+    const badge = document.querySelector('.email-badge');
 
+    badge.addEventListener('dragstart', (e) => {
+        e.dataTransfer.setData('text/plain', badge.textContent);
+        badge.style.opacity = "0.6";
+    });
+
+    badge.addEventListener('dragend', () => {
+        badge.style.opacity = "1";
+    });
+    </script>
 </body>
 
 </html>
