@@ -51,76 +51,76 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['change_password'])) {
     <meta charset="UTF-8">
     <title>Change Password</title>
     <style>
-    body {
-        font-family: 'Poppins', sans-serif;
-        background: #f0f2f5;
-        margin: 0;
-        padding: 0;
-    }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
 
-    .container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: calc(100vh - 60px);
-        /* account for header height */
-    }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 60px);
+            /* account for header height */
+        }
 
-    .password-box {
-        background: #fff;
-        padding: 30px;
-        width: 400px;
-        border-radius: 12px;
-        box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
-        text-align: center;
-    }
+        .password-box {
+            background: #fff;
+            padding: 30px;
+            width: 400px;
+            border-radius: 12px;
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
 
-    .password-box h2 {
-        margin-bottom: 20px;
-        color: #0542c5;
-    }
+        .password-box h2 {
+            margin-bottom: 20px;
+            color: #0542c5;
+        }
 
-    .password-box input {
-        width: 100%;
-        padding: 12px;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-        margin-bottom: 15px;
-        font-size: 14px;
-    }
+        .password-box input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
 
-    .password-box button {
-        width: 100%;
-        padding: 12px;
-        background: #0542c5;
-        color: white;
-        font-size: 16px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: 0.3s;
-    }
+        .password-box button {
+            width: 100%;
+            padding: 12px;
+            background: #0542c5;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-    .password-box button:hover {
-        background: #032b7a;
-    }
+        .password-box button:hover {
+            background: #032b7a;
+        }
 
-    .forgot-link {
-        display: block;
-        margin-top: 12px;
-        font-size: 14px;
-        color: #0542c5;
-        text-decoration: none;
-    }
+        .forgot-link {
+            display: block;
+            margin-top: 12px;
+            font-size: 14px;
+            color: #0542c5;
+            text-decoration: none;
+        }
 
-    .forgot-link:hover {
-        text-decoration: underline;
-    }
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
 
-    .message {
-        margin-bottom: 15px;
-        font-size: 14px;
-    }
+        .message {
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
     </style>
 </head>
 
@@ -140,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['change_password'])) {
                 <button type="submit" name="change_password">Update Password</button>
             </form>
 
-            <a href="reset_password/forgot_password.php" class="forgot-link">Forgot Password?</a>
+            <a href="forgot_password.php" class="forgot-link">Forgot Password?</a>
         </div>
     </div>
 </body>

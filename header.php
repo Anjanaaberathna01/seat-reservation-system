@@ -4,67 +4,67 @@ if (session_status() === PHP_SESSION_NONE) {
 } ?>
 <!-- Header -->
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap');
 
-body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
-#blue_bar {
-    background-color: #0542c5;
-    padding: 10px 0;
-}
-
-#blue_bar .blue_container {
-    width: 90%;
-    max-width: 1000px;
-    margin: auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-}
-
-#blue_bar h1 {
-    color: white;
-    font-size: 28px;
-    margin: 0;
-}
-
-#blue_bar h1 a {
-    color: white;
-    text-decoration: none;
-}
-
-#blue_bar .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-#blue_bar .nav-links a {
-    color: white;
-    text-decoration: none;
-    font-size: 14px;
-    padding: 5px 10px;
-    border-radius: 4px;
-    transition: background 0.3s;
-    cursor: pointer;
-}
-
-#blue_bar .nav-links a:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-@media screen and (max-width: 500px) {
-    #blue_bar .blue_container {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
+    body {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
     }
-}
+
+    #blue_bar {
+        background-color: #0542c5;
+        padding: 10px 0;
+    }
+
+    #blue_bar .blue_container {
+        width: 90%;
+        max-width: 1000px;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    #blue_bar h1 {
+        color: white;
+        font-size: 28px;
+        margin: 0;
+    }
+
+    #blue_bar h1 a {
+        color: white;
+        text-decoration: none;
+    }
+
+    #blue_bar .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    #blue_bar .nav-links a {
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        padding: 5px 10px;
+        border-radius: 4px;
+        transition: background 0.3s;
+        cursor: pointer;
+    }
+
+    #blue_bar .nav-links a:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    @media screen and (max-width: 500px) {
+        #blue_bar .blue_container {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+    }
 </style>
 
 <div id="blue_bar">
@@ -77,16 +77,16 @@ body {
         <!-- Right: Navigation -->
         <div class="nav-links">
             <?php if (isset($_SESSION['user_email'])): ?>
-            <!-- Logged-in user -->
-            <a href="dashboard.php">Home</a>
-            <a href="profile.php">Profile</a>
-            <a href="logout.php">Logout</a>
+                <!-- Logged-in user -->
+                <a href="dashboard.php">Home</a>
+                <a href="profile.php">Profile</a>
+                <a href="logout.php">Logout</a>
             <?php else: ?>
-            <!-- Before login -->
-            <a href="#" onclick="alert('First log in'); return false;"
-                style="opacity: 0.6; pointer-events: auto;">Home</a>
-            <a href="index.php">Log In</a>
-            <a href="admin/index.php">Admin</a>
+                <!-- Before login -->
+                <a href="#" onclick="alert('First log in'); return false;"
+                    style="opacity: 0.6; pointer-events: auto;">Home</a>
+                <a href="index.php">Log In</a>
+                <a href="admin/index.php">Admin</a>
             <?php endif; ?>
         </div>
     </div>
